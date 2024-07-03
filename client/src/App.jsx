@@ -100,8 +100,7 @@ function App() {
   return (
     <div >
       {showLoader && <Loader />}
-      {route.pathname !== '/build-home' && route.pathname !== '/group-share' && <Navbar />}
-      {(route.pathname === '/build-home' || route.pathname === '/group-share') && <MyNavbar />}
+      <Navbar/>
 
       {isMobile && location.pathname === '/' && <Subbar/>}
       <Dropdown />

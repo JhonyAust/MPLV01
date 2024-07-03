@@ -1,9 +1,7 @@
 import {
   HomeIcon,
   UserCircleIcon,
-  TableCellsIcon,
   ServerStackIcon,
-  RectangleStackIcon,
   QueueListIcon,
   UsersIcon,
 } from "@heroicons/react/24/solid";
@@ -11,6 +9,8 @@ import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn } from "@/pages/auth";
 import UsersPage from "./pages/crud/users";
 import ListingPage from "./pages/crud/listings";
+import OrderPaintWall from "./pages/crud/orderPaintWall";
+import { PaintBrushIcon } from "@heroicons/react/24/outline";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -43,6 +43,12 @@ export const routes = [
         name: "Listings",
         path: "/listings",
         element: <ListingPage />,
+      },
+      {
+        icon: <PaintBrushIcon {...icon} />,
+        name: "Paint Wall Orders",
+        path: "/paint-wall-orders",
+        element: <OrderPaintWall />,
       },
     ],
   },
