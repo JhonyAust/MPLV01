@@ -1,0 +1,50 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { useEffect, useState } from "react";
+import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
+import ReactPaginate from "react-paginate";
+import { useDispatch } from "react-redux";
+import { getCurrentItems } from "../../../features/dataSlice";
+
+const Pagination = ({ itemsPerPage, pageData, currentPage, setCurrentPage }) => {
+  const [offset, setOffset] = useState(0);
+  const dispatch = useDispatch();
+
+  const endOffset = offset + itemsPerPage;
+  const currentItems = Array.isArray(pageData) ? pageData.slice(offset, offset + itemsPerPage) : [];
+  const pageCount = Math.ceil((Array.isArray(pageData) ? pageData.length : 0) / itemsPerPage);
+
+  useEffect(() => {
+    dispatch(getCurrentItems(currentItems));
+  }, [currentItems]);
+  useEffect(() => {
+    setCurrentPage(1); // Reset current page when pageData changes
+  }, [pageData, setCurrentPage]);
+
+  const handlePageClick = (e) => {
+    const newOffset = (e.selected * itemsPerPage) % pageData.length;
+    setOffset(newOffset);
+    setCurrentPage(e.selected + 1);
+  };
+
+  return (
+    <ReactPaginate
+      breakLabel="..."
+      nextLabel={<FiChevronsRight />}
+      onPageChange={handlePageClick}
+      pageRangeDisplayed={2}
+      pageCount={pageCount}
+      previousLabel={<FiChevronsLeft />}
+      renderOnZeroPageCount={null}
+      containerClassName="wb-pagination"
+      pageClassName="pagination-item"
+      pageLinkClassName="pagination-link"
+      activeClassName="pagination-link-active"
+      previousLinkClassName="prev"
+      nextLinkClassName="next"
+      disabledClassName="disabled"
+    />
+  );
+};
+
+export default Pagination;
