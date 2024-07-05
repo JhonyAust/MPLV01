@@ -15,13 +15,10 @@ import {
   statisticsChartsData,
 } from "@/data";
 import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export function Home() {
-  
-  const dispatch = useDispatch();
-
-  const { listings } = useSelector((state) => state.listings);
+  const { listings, ordersPaintWall } = useSelector((state) => state.listings);
   const { users } = useSelector((state) => state.users);
 
   const statisticsCardsData = [
@@ -29,7 +26,7 @@ export function Home() {
       color: "gray",
       icon: BanknotesIcon,
       title: "Total Orders",
-      value: "$53k",
+      value: ordersPaintWall ? ordersPaintWall.length.toString() : 'Loading...',
       footer: {
         color: "text-green-500",
         value: "+5%",
@@ -39,8 +36,8 @@ export function Home() {
     {
       color: "gray",
       icon: UsersIcon,
-      title: "Total's Users",
-      value: users.length.toString(), 
+      title: "Total Users",
+      value: users ? users.length.toString() : 'Loading...',
       footer: {
         color: "text-green-500",
         value: "+3%",
@@ -51,7 +48,7 @@ export function Home() {
       color: "gray",
       icon: UserPlusIcon,
       title: "New Clients",
-      value: users.length.toString(), 
+      value: users ? users.length.toString() : 'Loading...',
       footer: {
         color: "text-red-500",
         value: "-2%",
@@ -61,8 +58,8 @@ export function Home() {
     {
       color: "gray",
       icon: ChartBarIcon,
-      title: "Total Listing",
-      value: listings.length.toString(), 
+      title: "Total Listings",
+      value: listings ? listings.length.toString() : 'Loading...',
       footer: {
         color: "text-green-500",
         value: "+5%",
@@ -70,6 +67,7 @@ export function Home() {
       },
     },
   ];
+
   return (
     <div className="mt-12">
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
@@ -107,7 +105,6 @@ export function Home() {
           />
         ))}
       </div>
-      
     </div>
   );
 }

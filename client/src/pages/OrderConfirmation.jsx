@@ -1,60 +1,29 @@
-import { useEffect, React } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { GiConfirmed } from "react-icons/gi";
 import { useSelector } from 'react-redux';
-
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 const OrderConfirmation = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const formData = location.state ? location.state.formData : null;
   const cartItems = useSelector(state => state.cart.cartItems);
   const totalAmount = useSelector(state => state.cart.totalAmount);
-  const { currentUser } = useSelector((state) => state.user);
-
   useEffect(() => {
-    if (!formData || !cartItems || cartItems.length === 0 || !currentUser) {
+    if (!formData || !cartItems || cartItems.length === 0 ) {
       const currentPath = window.location.pathname;
       const newPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
       navigate(newPath);
-    } else {
-      // Send order data to the backend
-      const orderData = {
-        user: currentUser._id, // User ID from currentUser
-        items: cartItems,
-        totalAmount,
-        shippingDetails: formData,
-      };
-
-      const createOrder = async () => {
-        try {
-          const response = await fetch('/api/orders/create', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderData),
-          });
-
-          if (!response.ok) {
-            throw new Error('Failed to create order');
-          }
-
-          const data = await response.json();
-          console.log('Order saved:', data);
-        } catch (error) {
-          console.error('Error saving order:', error);
-        }
-      };
-
-      createOrder();
-    }
-  }, [formData, cartItems, navigate, currentUser, totalAmount]);
+    } 
+    
+  }, [formData, cartItems, navigate, totalAmount]);
 
   return (
     <div className="container mx-auto p-16 mt-12">
       <div className='flex justify-center items-center '>
         <div className='flex flex-col justify-center items-center'>
-          <GiConfirmed className=' text-green-400' size={36} />
+          <GiConfirmed className='text-green-400' size={36} />
           <h1 className="text-lg font-semibold p-6 text-center">Thank You!<br />Your order has been received.</h1>
         </div>
       </div>

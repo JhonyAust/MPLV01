@@ -11,7 +11,11 @@ export const createOrder = async (req, res, next) => {
             shippingDetails,
         });
         const savedOrder = await newOrder.save();
+        // Notify admins about the new order
+        
         res.status(201).json(savedOrder);
+        const message = JSON.stringify({ type: 'NEW_ORDER', order: savedOrder });
+        req.notifyAdmins(message);
     } catch (error) {
         next(error);
     }
