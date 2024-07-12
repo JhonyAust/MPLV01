@@ -1,5 +1,9 @@
+// orderPaintWall.controller.js
+
 import OrderPaintWall from '../models/orderPaintWall.model.js';
+import { io } from '../index.js';
 import { errorHandler } from '../utils/error.js';
+
 
 export const createOrder = async (req, res, next) => {
     try {
@@ -11,11 +15,11 @@ export const createOrder = async (req, res, next) => {
             shippingDetails,
         });
         const savedOrder = await newOrder.save();
-        // Notify admins about the new order
         
+        // Emit the event to notify admin
+        io.emit('newOrder', { order: savedOrder });
+
         res.status(201).json(savedOrder);
-        const message = JSON.stringify({ type: 'NEW_ORDER', order: savedOrder });
-        req.notifyAdmins(message);
     } catch (error) {
         next(error);
     }

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// src/widgets/layout/DashboardNavbar.jsx
+import React, { useEffect } from 'react';
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -19,9 +20,9 @@ import {
   Cog6ToothIcon,
   BellIcon,
   ClockIcon,
-  CreditCardIcon,
   Bars3Icon,
-  ArrowRightOnRectangleIcon ,
+  ArrowRightOnRectangleIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
 import {
   useMaterialTailwindController,
@@ -33,6 +34,10 @@ import {
   signOutAdminSuccess,
   signOutAdminFailure,
 } from '@/features/adminSlice';
+import { addNotification, removeNotification, clearNotifications } from '@/features/nfcSlice';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:3000');
 
 export function DashboardNavbar() {
   const dispatch = useDispatch();
@@ -41,52 +46,75 @@ export function DashboardNavbar() {
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
   const { currentAdmin } = useSelector((state) => state.admin);
+  const { nfc, newItemAdded } = useSelector((state) => state.nfcSlice);
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState([]);
-  console.log("Notifications: ",notifications);
+
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:3000');
-
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      if (message.type === 'NEW_ORDER') {
-        setNotifications(prev => [...prev, message.order]);
+    socket.on('newOrder', async (data) => {
+      const order = data.order;
+  
+      if (!order.user) {
+        console.error("order.user is undefined or null");
+        return;
       }
-    };
+  
+      const userId = order.user;
+  
+      try {
+        const res = await fetch(`/api/user/${userId}`, {
+          method: 'GET',
+        });
+        const userData = await res.json();
+    
+        const timestamp = new Date().toISOString();
 
-    ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
-
-    ws.onclose = () => {
-      console.log('WebSocket connection closed');
-    };
-
+        dispatch(addNotification({ ...order, user: userData.username, timestamp ,orderId:order._id}));
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    });
+    
     return () => {
-      ws.close();
+      socket.off('newOrder');
     };
-  }, []);
+  }, [dispatch]);
 
   const handleSignOut = async () => {
-    console.log("HEllo Data before: ");
     try {
       dispatch(signOutAdminStart());
-      
+
       const res = await fetch('/api/auth/signout');
       const data = await res.json();
-      console.log(res);
+      
       if (data.success === false) {
         dispatch(signOutUserFailure(data.message));
         return;
       }
       dispatch(signOutAdminSuccess(data));
-     // console.log("HEllo Data after: ",data);
       navigate('/');
     } catch (error) {
       dispatch(signOutAdminFailure(error.message));
     }
+  };
+
+  const handleRemoveNotification = (index) => {
+    
+    dispatch(removeNotification(index));
     
   };
+
+  const handleClearNotifications = () => {
+    console.log("handleClearNotifications called");
+    dispatch(clearNotifications());
+  };
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString();
+  };
+  const handleNotificationClick = (orderId) => {
+    navigate(`/dashboard/paint-wall-orders/${orderId}`);
+  };
+
 
   return (
     <Navbar
@@ -160,63 +188,72 @@ export function DashboardNavbar() {
                   <Link to='/dashboard/settings'>Settings</Link>
                 </MenuItem>
                 <MenuItem onClick={handleSignOut}>
-                  <ArrowRightOnRectangleIcon  className="h-5 w-5 mr-2" />
+                  <ArrowRightOnRectangleIcon className="h-5 w-5 mr-2" />
                   Sign Out
                 </MenuItem>
               </MenuList>
             </Menu>
           ) : (
             <Link to="/auth/sign-in">
-            <div>
-              <Button
-                variant="text"
-                color="blue-gray"
-                className="hidden items-center gap-1 px-4 xl:flex normal-case"
-              >
-                <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-                Sign In
-              </Button>
-              <IconButton
-                variant="text"
-                color="blue-gray"
-                className="grid xl:hidden"
-              >
-                <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              </IconButton>
-            </div>
+              <div>
+                <Button
+                  variant="text"
+                  color="blue-gray"
+                  className="hidden items-center gap-1 px-4 xl:flex normal-case"
+                >
+                  <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+                  Sign In
+                </Button>
+                <IconButton
+                  variant="text"
+                  color="blue-gray"
+                  className="grid xl:hidden"
+                >
+                  <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+                </IconButton>
+              </div>
             </Link>
           )}
-          <Menu>
-            <MenuHandler>
-              <IconButton variant="text" color="blue-gray">
-                <BellIcon className="h-5 w-5 text-blue-gray-500" />
-              </IconButton>
+          <Menu >
+            <MenuHandler >
+            <IconButton 
+            
+            variant="text" 
+            color="blue-gray"
+             >
+              <BellIcon className="h-5 w-5 text-blue-gray-500 relative" onClick={handleClearNotifications}/>
+              {newItemAdded && (
+                <span className="bg-green-500 rounded-full h-2.5 w-2.5 absolute top-0 right-0"></span>
+              )}
+            </IconButton>
+
             </MenuHandler>
             <MenuList className="w-max border-0">
-              {notifications.map((notification, index) => (
-                <MenuItem key={index} className="flex items-center gap-3">
-                  <Avatar
-                    src="https://demos.creative-tim.com/material-dashboard/assets/img/team-2.jpg"
-                    alt="item-1"
-                    size="sm"
-                    variant="circular"
-                  />
+              {nfc.map((notification, index) => (
+                <MenuItem key={index} className="flex items-center gap-3" onClick={() => handleNotificationClick(notification.orderId)}>
                   <div>
                     <Typography
                       variant="small"
                       color="blue-gray"
                       className="mb-1 font-normal"
                     >
-                      <strong>New order added</strong> from user
+                      <strong>New order added</strong> from {notification.user}
                     </Typography>
                     <Typography
                       variant="small"
                       color="blue-gray"
                       className="flex items-center gap-1 text-xs font-normal opacity-60"
                     >
-                      <ClockIcon className="h-3.5 w-3.5" /> Just now
+                      <ClockIcon className="h-3.5 w-3.5" /> {formatDate(notification.timestamp)}
                     </Typography>
                   </div>
+                  <IconButton
+                    onClick={() => handleRemoveNotification(index)}
+                    variant="text"
+                    color="blue-gray"
+                  >
+                    <XMarkIcon className="h-5 w-5 text-blue-gray-500" />
+                  </IconButton>
                 </MenuItem>
               ))}
             </MenuList>
