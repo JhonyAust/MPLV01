@@ -11,13 +11,27 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 import { Server } from 'socket.io';
 import http from 'http';
-
+import Listing from './models/listing.model.js';
 dotenv.config();
 
 mongoose
     .connect(process.env.MONGO)
-    .then(() => {
+    .then(async() => {
         console.log('Connected to MongoDB!');
+         // Update listings to include isApproved property
+    try {
+        const listings = await Listing.find();
+        for (const listing of listings) {
+            if (listing.isApproved === undefined) {
+                listing.isApproved = false; // Set default value for isApproved
+                await listing.save();
+                console.log(`Updated listing with ID: ${listing._id}`);
+            }
+        }
+        console.log('All listings updated successfully');
+    } catch (error) {
+        console.error('Error updating listings:', error.message);
+    }
     })
     .catch((err) => {
         console.log(err);

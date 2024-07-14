@@ -17,7 +17,7 @@ import { setUsers, addUser, deleteUser, setLoading, setError } from '../../featu
 
 const UsersPage = () => {
   const dispatch = useDispatch();
-  const { users, loading, error } = useSelector(state => state.users);
+  const { users, loading } = useSelector(state => state.users);
   const [newUser, setNewUser] = useState({ username: '', email: '', password: '', avatar: '' });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,6 +37,7 @@ const UsersPage = () => {
         if (data.success === false) {
           dispatch(setError(data.message));
         } else {
+          console.log("Users Array is:",data);
           dispatch(setUsers(data));
         }
         dispatch(setLoading(false));
@@ -101,7 +102,7 @@ const UsersPage = () => {
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
-
+  console.log("current users are:",currentUsers);
   const totalPages = Math.ceil(users.length / usersPerPage);
 
   return (
@@ -112,12 +113,11 @@ const UsersPage = () => {
       </div>
       {loading ? (
         <Spinner />
-      ) : error ? (
-        <Typography color="red">{error}</Typography>
       ) : (
         <div>
           <div className="space-y-4">
             {currentUsers.map((user) => (
+              
               <Card key={user._id} className="p-4 border-b border-gray-200">
                 <CardBody className="flex items-center justify-between">
                   <div className="flex items-center">

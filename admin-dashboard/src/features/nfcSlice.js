@@ -12,9 +12,9 @@ const nfcSlice = createSlice({
     reducers: {
         addNotification(state, action) {
             if (state.nfc.length >= 10) {
-                state.nfc.shift(); // Remove the oldest notification if there are already 10 notifications
+                state.nfc.pop(); // Remove the oldest notification if there are already 10 notifications
             }
-            state.nfc.push(action.payload);
+            state.nfc.unshift(action.payload);
             state.newItemAdded = true; // Set newItemAdded to true
         },
         removeNotification(state, action) {

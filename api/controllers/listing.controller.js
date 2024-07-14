@@ -3,9 +3,35 @@ import { errorHandler } from '../utils/error.js';
 
 export const createListing = async(req, res, next) => {
     try {
-        const listing = await Listing.create(req.body);
+        const listing = await Listing.create({
+            ...req.body,
+            isApproved: false, // Default to not approved
+        });
+        console.log("Created listing:", listing);
         return res.status(201).json(listing);
     } catch (error) {
+        console.error("Error creating listing:", error);
+        next(error);
+    }
+};
+
+export const approveListing = async(req, res, next) => {
+    try {
+        const listing = await Listing.findById(req.params.id);
+        if (!listing) {
+            return next(errorHandler(404, 'Listing not found!'));
+        }
+
+        if(listing.isApproved === false){
+            listing.isApproved = true;
+        }else{
+            listing.isApproved = false;
+        }
+        await listing.save();
+        console.log("Approved listing:", listing);
+        return res.status(200).json(listing);
+    } catch (error) {
+        console.error("Error approving listing:", error);
         next(error);
     }
 };
@@ -23,8 +49,10 @@ export const deleteListing = async(req, res, next) => {
 
     try {
         await Listing.findByIdAndDelete(req.params.id);
+        console.log("Deleted listing with ID:", req.params.id);
         res.status(200).json('Listing has been deleted!');
     } catch (error) {
+        console.error("Error deleting listing:", error);
         next(error);
     }
 };
@@ -37,14 +65,19 @@ export const updateListing = async(req, res, next) => {
     if (req.user.id !== listing.userRef) {
         return next(errorHandler(401, 'You can only update your own listings!'));
     }
+    if (!listing.isApproved) {
+        return next(errorHandler(403, 'Cannot update unapproved listings!'));
+    }
 
     try {
         const updatedListing = await Listing.findByIdAndUpdate(
             req.params.id,
             req.body, { new: true }
         );
+        console.log("Updated listing:", updatedListing);
         res.status(200).json(updatedListing);
     } catch (error) {
+        console.error("Error updating listing:", error);
         next(error);
     }
 };
@@ -55,17 +88,30 @@ export const getListing = async(req, res, next) => {
         if (!listing) {
             return next(errorHandler(404, 'Listing not found!'));
         }
+        if (!listing.isApproved) {
+            return next(errorHandler(403, 'Cannot fetch unapproved listings!'));
+        }
+        console.log("Fetched listing:", listing);
         res.status(200).json(listing);
     } catch (error) {
+        console.error("Error fetching listing:", error);
         next(error);
     }
 };
 
 export const getAllListings = async(req, res, next) => {
     try {
-        const listings = await Listing.find();
+        
+        const currentAdmin = JSON.parse(req.headers['current-admin']); // Parse currentAdmin from headers
+        console.log("Request user:", currentAdmin);
+        const isAdmin = currentAdmin.role==='admin' ? true : false; // Check if the request is from an admin
+        const filter = isAdmin ? {} : { isApproved: true };
+        console.log("Filter is:", filter);
+        const listings = await Listing.find(filter);
+        //console.log("Fetched all listings:", listings);
         res.status(200).json(listings);
     } catch (error) {
+        console.error("Error fetching all listings:", error);
         next(error);
     }
 };
@@ -110,9 +156,7 @@ export const getListings = async(req, res, next) => {
                 .join('|');
         }
 
-
         const sort = req.query.sort || 'createdAt';
-
         const order = req.query.order || 'desc';
 
         const listings = await Listing.find({
@@ -122,6 +166,7 @@ export const getListings = async(req, res, next) => {
                 furnished,
                 parking,
                 type,
+                isApproved: true, // Only fetch approved listings
             })
             .sort({
                 [sort]: order
@@ -129,8 +174,10 @@ export const getListings = async(req, res, next) => {
             .limit(limit)
             .skip(startIndex);
 
+        console.log("Fetched filtered listings:", listings);
         return res.status(200).json(listings);
     } catch (error) {
+        console.error("Error fetching filtered listings:", error);
         next(error);
     }
 };

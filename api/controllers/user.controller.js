@@ -78,9 +78,12 @@ export const getUser = async(req, res, next) => {
 
 export const getAllUsers = async(req, res, next) => {
     try {
+        console.log("Request for users req is: ",req);
         const users = await User.find({ role: { $ne: 'admin' } });
+        console.log("Request for users users are : ",users);
         res.status(200).json(users);
     } catch (error) {
+        console.log("Request for users error is: ",error);
         next(error);
     }
 };
