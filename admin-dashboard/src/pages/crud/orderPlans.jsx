@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Card, CardBody, Typography, Spinner, Select, Option } from '@material-tailwind/react';
-import { setOrdersPaintWall, deleteOrdersPaintWall } from '../../features/usersPanelSlice';
+import { setOrdersPlans, deleteOrdersPlans } from '../../features/usersPanelSlice';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import { useNavigate, useParams } from 'react-router-dom';
 import { removeNotificationByOrderId } from '../../features/nfcSlice';
@@ -43,24 +43,26 @@ const OrderList = ({ orders, onToggle, onDelete, onUpdateStatus }) => (
                 <Typography>Address: {order.shippingDetails.address}</Typography>
                 <Typography>Message: {order.shippingDetails.message}</Typography>
                 <Typography>Agreed to Terms: {order.shippingDetails.agreeTerms ? 'Yes' : 'No'}</Typography>
+
+               
               </div>
             )}
+             {/* Dropdown to Update Order Status */}
+             <div className="flex items-center py-2 mt-4 w-min">
+                  <Typography variant="subtitle" className="mr-4">Status: </Typography>
+                  <Select
+                    value={order.status}
+                    onChange={(value) => onUpdateStatus(order._id, value)}
+                  >
+                    <Option value="Order Received">Order Received</Option>
+                    <Option value="In-Person Consultaion">In-Person Consultaion</Option>
+                    <Option value="Confirmed">Confirmed</Option>
+                    <Option value="Completed">Completed</Option>
+                    <Option value="Cancelled">Cancelled</Option>
+                  </Select>
+                </div>
           </div>
-          {/* Dropdown to Update Order Status */}
-          <div className="flex items-center py-2 mt-4 w-min">
-            <Typography variant="subtitle" className="mr-4">Status: </Typography>
-            <Select
-              value={order.status}
-              onChange={(value) => onUpdateStatus(order._id, value)}
-            >
-              <Option value="Order Received">Order Received</Option>
-              <Option value="In-Person Consultation">In-Person Consultation</Option>
-              <Option value="Confirmed">Confirmed</Option>
-              <Option value="Completed">Completed</Option>
-              <Option value="Cancelled">Cancelled</Option>
-            </Select>
-          </div>
-          <Button variant="text" color="red" onClick={() => onDelete(order._id)}>
+          <Button className='py-8' variant="text" color="red" onClick={() => onDelete(order._id)}>
             Delete Order
           </Button>
         </CardBody>
@@ -99,10 +101,10 @@ const OrderDetail = ({ order }) => (
   </div>
 );
 
-const OrderPaintWall = () => {
+const OrderPlan = () => {
   const { orderId } = useParams();
   const dispatch = useDispatch();
-  const ordersState = useSelector((state) => state.usersPanel.ordersPaintWall);
+  const ordersState = useSelector((state) => state.usersPanel.ordersPlans);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -113,12 +115,12 @@ const OrderPaintWall = () => {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const response = await fetch('/api/orders/paint');
+        const response = await fetch('/api/orders/plan');
         if (!response.ok) {
           throw new Error('Failed to fetch orders');
         }
         const data = await response.json();
-        dispatch(setOrdersPaintWall(data));
+        dispatch(setOrdersPlans(data));
       } catch (error) {
         setError(error.message || 'Failed to fetch orders');
       }
@@ -139,7 +141,7 @@ const OrderPaintWall = () => {
         throw new Error('Failed to delete order');
       }
 
-      dispatch(deleteOrdersPaintWall(orderId));
+      dispatch(deleteOrdersPlans(orderId));
       dispatch(removeNotificationByOrderId(orderId));
     } catch (error) {
       setError(error.message || 'Failed to delete order');
@@ -166,7 +168,7 @@ const OrderPaintWall = () => {
       const updatedOrders = ordersState.map((order) => 
         order._id === orderId ? updatedOrder : order
       );
-      dispatch(setOrdersPaintWall(updatedOrders));
+      dispatch(setOrdersPlans(updatedOrders));
     } catch (error) {
       setError(error.message || 'Failed to update order status');
     }
@@ -183,7 +185,7 @@ const OrderPaintWall = () => {
       }
       return order;
     });
-    dispatch(setOrdersPaintWall(updatedOrders));
+    dispatch(setOrdersPlans(updatedOrders));
   };
 
   const renderOrderDetails = (order) => (
@@ -234,4 +236,4 @@ const OrderPaintWall = () => {
   return <div className="p-6">{renderContent()}</div>;
 };
 
-export default OrderPaintWall;
+export default OrderPlan;

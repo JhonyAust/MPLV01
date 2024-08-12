@@ -49,6 +49,7 @@ const CheckoutPaintWall = () => {
         items: cartItems,
         totalAmount,
         shippingDetails: formData,
+        type:'paint',
       };
 
       const response = await fetch('/api/orders/create', {
@@ -77,7 +78,7 @@ const CheckoutPaintWall = () => {
       });
 
       // Navigate to order confirmation page
-      navigate('/painting-wall-services/checkout/order-confirmation', { state: { formData } });
+      navigate('/painting-wall-services/checkout/order-confirmation', { state: { formData,cartItems } });
     } catch (error) {
       console.error('Error saving order:', error);
       // Handle error state or show user feedback

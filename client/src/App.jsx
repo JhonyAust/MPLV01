@@ -54,6 +54,13 @@ import PageComponent from "./pages/PageComponent";
 import CartPage from "./pages/CartPage";
 import CheckoutPaintWall from "./pages/CheckoutPaintWall";
 import OrderConfirmation from "./pages/OrderConfirmation";
+import TenantPlans from "./pages/TenantPlans";
+import SellerPlans from "./pages/SellerPlans";
+import CheckoutPlan from "./components/checkoutplan/CheckoutPlan";
+import MyOrders from "./pages/MyOrders";
+import MyPaintOrders from "./pages/MyPaintOrders";
+import MyPlansOrders from "./pages/MyPlansOrders";
+import MyListings from "./pages/MyListings";
 function App() {
   const [showButton, setShowButton] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
@@ -144,13 +151,24 @@ function App() {
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/page' element={<PageComponent />} />
           <Route path='/home-services' element={<HomeServices />} />
+          <Route path='/tenant/plans' element={<TenantPlans />} />
+          <Route path='/seller/plans' element={<SellerPlans />} />
           <Route path='/listing/:listingId' element={<Listing />} />
           <Route element={<PrivateRoute/>}>
             <Route path='/profile' element={<Profile />} />
+            <Route path='/profile/my-listings' element={<MyListings />} />
+            <Route path='/profile/my-orders' element={<MyOrders />} />
+            <Route path='/profile/my-orders/paint-order' element={<MyPaintOrders />} />
+            <Route path='/profile/my-orders/plans' element={<MyPlansOrders />} />
             <Route path='/create-listing' element={<CreateListing />} />
             <Route path="/painting-wall-services/cart" element={<CartPage/>} />
             <Route path="/painting-wall-services/checkout" element={<CheckoutPaintWall/>} />
+            <Route path="/seller/plans/checkout" element={<CheckoutPlan />} />
             <Route path="/painting-wall-services/checkout/order-confirmation" element={<OrderConfirmation/>} />
+            <Route path="/seller/plans/checkout/order-confirmation" element={<OrderConfirmation/>} />
+            <Route path="/tenant/plans/checkout" element={<CheckoutPlan/>} />
+            <Route path="/tenant/plans/checkout/order-confirmation" element={<OrderConfirmation/>} />
+
             <Route 
               path='/update-listing/:listingId'
               element={<UpdateListing />}

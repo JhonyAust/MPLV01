@@ -1,13 +1,15 @@
-// store/listingsSlice.js
+
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   listings: [],
   ordersPaintWall: [],
+  ordersPlans: [],
+  ordersList: [],
 };
 
-const listingsSlice = createSlice({
-  name: 'listings',
+const usersPanelSlice = createSlice({
+  name: 'usersPanel',
   initialState,
   reducers: {
     setListings(state, action) {
@@ -27,8 +29,20 @@ const listingsSlice = createSlice({
     deleteOrdersPaintWall(state, action) {
       state.ordersPaintWall = state.ordersPaintWall.filter(order => order._id !== action.payload);
     },
+    setOrdersPlans(state, action) {
+      state.ordersPlans = action.payload;
+    },
+    deleteOrdersPlans(state, action) {
+      state.ordersPlans = state.ordersPlans.filter(order => order._id !== action.payload);
+    },
+    setOrdersList(state, action) {
+        state.ordersList = action.payload;
+      },
+      deleteOrdersList(state, action) {
+        state.ordersList = state.ordersList.filter(order => order._id !== action.payload);
+      },
   },
 });
 
-export const { setListings, deleteListing, setOrdersPaintWall, deleteOrdersPaintWall,approveListing} = listingsSlice.actions;
-export default listingsSlice.reducer;
+export const { setListings, deleteListing, setOrdersPaintWall, deleteOrdersPaintWall,approveListing,setOrdersPlans,deleteOrdersPlans,setOrdersList,deleteOrdersList} = usersPanelSlice.actions;
+export default usersPanelSlice.reducer;

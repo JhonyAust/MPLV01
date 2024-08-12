@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
-import orderPaintWallRouter from './routes/orderPaintWall.route.js';
+import orderRouter from './routes/order.route.js';
 import listingRouter from './routes/listing.route.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
@@ -19,19 +19,19 @@ mongoose
     .then(async() => {
         console.log('Connected to MongoDB!');
          // Update listings to include isApproved property
-    try {
-        const listings = await Listing.find();
-        for (const listing of listings) {
-            if (listing.isApproved === undefined) {
-                listing.isApproved = false; // Set default value for isApproved
-                await listing.save();
-                console.log(`Updated listing with ID: ${listing._id}`);
-            }
-        }
-        console.log('All listings updated successfully');
-    } catch (error) {
-        console.error('Error updating listings:', error.message);
-    }
+    // try {
+    //     const listings = await Listing.find();
+    //     for (const listing of listings) {
+    //         if (listing.isApproved === undefined) {
+    //             listing.isApproved = false; // Set default value for isApproved
+    //             await listing.save();
+    //             console.log(`Updated listing with ID: ${listing._id}`);
+    //         }
+    //     }
+    //     console.log('All listings updated successfully');
+    // } catch (error) {
+    //     console.error('Error updating listings:', error.message);
+    // }
     })
     .catch((err) => {
         console.log(err);
@@ -53,7 +53,7 @@ app.use(cookieParser());
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
-app.use('/api/orders', orderPaintWallRouter);
+app.use('/api/orders', orderRouter);
 
 app.use(express.static(path.join(__dirname, '/client/dist')));
 app.get('*', (req, res) => {

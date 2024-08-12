@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const OrderPaintWallSchema = new mongoose.Schema({
+const OrderSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -23,12 +23,21 @@ const OrderPaintWallSchema = new mongoose.Schema({
         message: String,
         agreeTerms: Boolean,
     },
+    type: {
+        type: String,
+        required: true,
+    },
+    status: { 
+        type: String, 
+        enum: ['Order Received', 'In-Person Consultaion','Confirmed', 'Completed', 'Cancelled'],
+        default: 'Order Received' 
+     },
     createdAt: {
         type: Date,
         default: Date.now,
     },
 });
 
-const OrderPaintWall = mongoose.model('Order', OrderPaintWallSchema);
+const Order = mongoose.model('Order', OrderSchema);
 
-export default OrderPaintWall;
+export default Order;

@@ -1,23 +1,19 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { GiConfirmed } from "react-icons/gi";
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
 const OrderConfirmation = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const formData = location.state ? location.state.formData : null;
-  const cartItems = useSelector(state => state.cart.cartItems);
-  const totalAmount = useSelector(state => state.cart.totalAmount);
+  const { formData, cartItems, totalAmount, plan } = location.state || {};
+
   useEffect(() => {
-    if (!formData || !cartItems || cartItems.length === 0 ) {
+    if ((!formData || !cartItems || cartItems.length === 0) && !plan) {
       const currentPath = window.location.pathname;
       const newPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
       navigate(newPath);
-    } 
-    
-  }, [formData, cartItems, navigate, totalAmount]);
+    }
+  }, [formData, cartItems, plan, navigate]);
 
   return (
     <div className="container mx-auto p-16 mt-12">
@@ -42,23 +38,34 @@ const OrderConfirmation = () => {
         )}
       </div>
 
-      <div className="bg-white p-6 rounded shadow">
-        <h2 className="text-xl font-bold mb-4">Cart Summary</h2>
-        <ul className="divide-y divide-gray-200">
-          {cartItems && cartItems.map((item, index) => (
-            <li key={index} className="py-2">
-              <div className="flex justify-between">
-                <span>{item.title}</span>
-                <span className="font-semibold">{item.newCost} BDT</span>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className="flex justify-between mt-4">
-          <span className="font-semibold">Total Amount:</span>
-          <span className="font-semibold">{totalAmount} BDT</span>
+      {cartItems && cartItems.length > 0 && (
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="text-xl font-bold mb-4">Cart Summary</h2>
+          <ul className="divide-y divide-gray-200">
+            {cartItems.map((item, index) => (
+              <li key={index} className="py-2">
+                <div className="flex justify-between">
+                  <span>{item.title}</span>
+                  <span className="font-semibold">{item.newCost} BDT</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="flex justify-between mt-4">
+            <span className="font-semibold">Total Amount:</span>
+            <span className="font-semibold">{totalAmount} BDT</span>
+          </div>
         </div>
-      </div>
+      )}
+
+      {plan && (
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="text-xl font-bold mb-4">Plan Summary</h2>
+          <p><strong>Plan Name:</strong> {plan.name}</p>
+          <p><strong>Description:</strong> {plan.description}</p>
+          <p><strong>Price:</strong> ৳ {plan.price}</p>
+        </div>
+      )}
     </div>
   );
 };

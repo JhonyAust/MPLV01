@@ -18,15 +18,26 @@ import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
 import { useSelector } from "react-redux";
 
 export function Home() {
-  const { listings, ordersPaintWall } = useSelector((state) => state.listings);
+  const { listings, ordersPaintWall, ordersPlans } = useSelector((state) => state.usersPanel);
   const { users } = useSelector((state) => state.users);
 
   const statisticsCardsData = [
     {
       color: "gray",
       icon: BanknotesIcon,
-      title: "Total Orders",
+      title: "Total Paint Orders",
       value: ordersPaintWall ? ordersPaintWall.length.toString() : 'Loading...',
+      footer: {
+        color: "text-green-500",
+        value: "+5%",
+        label: "than last week",
+      },
+    },
+    {
+      color: "gray",
+      icon: BanknotesIcon,
+      title: "Total Plan Orders",
+      value: ordersPlans ? ordersPlans.length.toString() : 'Loading...',
       footer: {
         color: "text-green-500",
         value: "+5%",

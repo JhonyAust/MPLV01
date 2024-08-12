@@ -8,11 +8,11 @@ import {
   Spinner,
   Avatar,
 } from '@material-tailwind/react';
-import { setListings, deleteListing, approveListing } from '../../features/listingsSlice';
+import { setListings, deleteListing, approveListing } from '../../features/usersPanelSlice';
 
 const ListingPage = () => {
   const dispatch = useDispatch();
-  const listings = useSelector(state => state.listings.listings);
+  const listings = useSelector(state => state.usersPanel.listings);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -100,9 +100,7 @@ const ListingPage = () => {
       </div>
       {loading ? (
         <Spinner />
-      ) : error ? (
-        <Typography color="red">{error}</Typography>
-      ) : (
+      )  : (
         <div>
           <div className="space-y-4">
             {currentListings.map((listing) => (

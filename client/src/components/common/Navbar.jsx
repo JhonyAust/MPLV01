@@ -46,6 +46,37 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showContactInfo, setShowContactInfo] = useState(false);
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false); // Add state for submenu
+  
+  // Show submenu when clicking MyOrders
+   const toggleSubmenu = () => {
+    setIsSubmenuOpen(!isSubmenuOpen);
+  };
+
+  // Show dropdown when clicking the profile icon
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+    if(isDropdownOpen===false){
+      setIsSubmenuOpen(false);
+    }
+  };
+
+  const handleClickOutside = (event) => {
+    // Check if the click is outside the dropdown and profile icon
+    if (isDropdownOpen && !event.target.closest(".profile-dropdown") && !event.target.closest(".profile-icon") && !event.target.closest(".dropdown-icon")) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  // Add event listener for clicks outside the dropdown
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
   };
@@ -338,22 +369,62 @@ const Navbar = () => {
             {darkMode ? <FiSun /> : <FiMoon />}
           </div>
           {/*----------------------------- Profile Icon-------------------------------------------------- */}
-          {currentUser ? (
-          <Link to='/profile'>
-          <img
-            className='rounded-full h-8 w-8 object-cover'
-            src={currentUser.avatar}
-            alt='profile'
-          />
-          </Link>
-            ) : (
-            
-               <div className="bg-white shadow-md icon-box dark:bg-dark-light hover:shadow-lg hover:bg-transparent">
-                 <BiUser onClick={handleLoginClick}/>
-                 
-               </div>
-            )}
-          
+           {/* Profile Icon and dropdown */}
+           {currentUser ? (
+                <div className="relative">
+                  <img
+                    className="rounded-full h-8 w-8 object-cover cursor-pointer profile-icon"
+                    src={currentUser.avatar}
+                    alt="profile"
+                    onClick={toggleDropdown}
+                  />
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg profile-dropdown">
+                      <ul className="flex flex-col py-2">
+                        <li className="px-4 py-2 hover:bg-gray-100">
+                          <Link to="/profile" onClick={() => setIsDropdownOpen(false)}>
+                            Profile
+                          </Link>
+                        </li>
+                        <li className="px-4 py-2 " onClick={toggleSubmenu}>
+                          <div className="flex items-center justify-between hover:bg-gray-100">
+                            <Link to="profile/my-orders" onClick={() => setIsDropdownOpen(false)}>
+                              My Orders
+                            </Link>
+                            {isSubmenuOpen ? <BiChevronUp className="dropdown-icon" size={20} /> : <BiChevronDown className="dropdown-icon" size={20} />}
+                          </div>
+                          {isSubmenuOpen && (
+                            <ul className="ml-4 mt-2 space-y-2">
+                              <li className="hover:bg-gray-100">
+                                <Link to="/profile/my-orders/plans" onClick={() => setIsDropdownOpen(false)}>
+                                  MyPlans
+                                </Link>
+                              </li>
+                              <li className="hover:bg-gray-100">
+                                <Link to="/profile/my-orders/paint-order" onClick={() => setIsDropdownOpen(false)}>
+                                  Paint Order
+                                </Link>
+                              </li>
+                            </ul>
+                          )}
+                        </li>
+                        <li className="px-4 py-2 hover:bg-gray-100">
+                          <Link to="/profile/my-listings" onClick={() => setIsDropdownOpen(false)}>
+                            My Listings
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="bg-white shadow-md icon-box dark:bg-dark-light hover:shadow-lg hover:bg-transparent">
+                  <button className="px-2 py-1 text-sm text-primary" onClick={handleLoginClick}>
+                    <HiMiniUserCircle size={24} />
+                  </button>
+                </div>
+              )}
+
           
           {/*------------------------------- Mobile Menu Toogle------------------------- */}
           <div

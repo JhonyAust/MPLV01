@@ -68,7 +68,7 @@ export function DashboardNavbar() {
     
         const timestamp = new Date().toISOString();
 
-        dispatch(addNotification({ ...order, user: userData.username, timestamp ,orderId:order._id}));
+        dispatch(addNotification({ ...order, user: userData.username, timestamp ,orderId:order._id,ordertype:order.type}));
       } catch (error) {
         console.error('Error fetching user details:', error);
       }
@@ -111,8 +111,13 @@ export function DashboardNavbar() {
     const date = new Date(timestamp);
     return date.toLocaleString();
   };
-  const handleNotificationClick = (orderId) => {
-    navigate(`/dashboard/paint-wall-orders/${orderId}`);
+  const handleNotificationClick = (type,orderId) => {
+    if(type==='paint'){
+      navigate(`/dashboard/paint-wall-orders/${orderId}`);
+    }else{
+      navigate(`/dashboard/plan-orders/${orderId}`);
+    }
+    
   };
 
 
@@ -230,14 +235,14 @@ export function DashboardNavbar() {
             </MenuHandler>
             <MenuList className="w-max border-0">
               {nfc.map((notification, index) => (
-                <MenuItem key={index} className="flex items-center gap-3" onClick={() => handleNotificationClick(notification.orderId)}>
+                <MenuItem key={index} className="flex items-center gap-3" onClick={() => handleNotificationClick(notification.ordertype,notification.orderId)}>
                   <div>
                     <Typography
                       variant="small"
                       color="blue-gray"
                       className="mb-1 font-normal"
                     >
-                      <strong>New order added</strong> from {notification.user}
+                      <strong>New <span className=' capitalize'>{notification.ordertype}</span> order added</strong> from {notification.user}
                     </Typography>
                     <Typography
                       variant="small"
