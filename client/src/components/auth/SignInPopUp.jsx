@@ -38,6 +38,7 @@ const SignInPopUp = ({ isOpen, onClose }) => {
         return;
       }
       dispatch(signInSuccess(data));
+      onClose();
       
       
     } catch (error) {
