@@ -158,7 +158,7 @@ export const getListings = async(req, res, next) => {
 
         const sort = req.query.sort || 'createdAt';
         const order = req.query.order || 'desc';
-
+        const maxPrice = req.query.maxPrice ? parseInt(req.query.maxPrice) : Infinity;
         const listings = await Listing.find({
                 name: { $regex: searchTerm, $options: 'i' },
                 address: { $regex: address, $options: 'i' },
@@ -166,6 +166,7 @@ export const getListings = async(req, res, next) => {
                 furnished,
                 parking,
                 type,
+                regularPrice: { $gte: 0, $lte: maxPrice },
                 isApproved: true, // Only fetch approved listings
             })
             .sort({

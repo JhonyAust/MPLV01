@@ -61,6 +61,7 @@ import MyOrders from "./pages/MyOrders";
 import MyPaintOrders from "./pages/MyPaintOrders";
 import MyPlansOrders from "./pages/MyPlansOrders";
 import MyListings from "./pages/MyListings";
+import Projects from "./pages/Project";
 function App() {
   const [showButton, setShowButton] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
@@ -154,6 +155,8 @@ function App() {
           <Route path='/tenant/plans' element={<TenantPlans />} />
           <Route path='/seller/plans' element={<SellerPlans />} />
           <Route path='/listing/:listingId' element={<Listing />} />
+          <Route path='/project' element={<Projects/>} />
+
           <Route element={<PrivateRoute/>}>
             <Route path='/profile' element={<Profile />} />
             <Route path='/profile/my-listings' element={<MyListings />} />

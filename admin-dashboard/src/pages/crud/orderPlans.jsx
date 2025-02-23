@@ -15,6 +15,7 @@ const OrderList = ({ orders, onToggle, onDelete, onUpdateStatus }) => (
             <Typography variant="h6">Order ID: {order._id}</Typography>
             <Typography>User: {order.user.username} ({order.user.email})</Typography>
             <Typography>Total Amount: {order.totalAmount} BDT</Typography>
+            
             <Button
               style={{ background: 'transparent' }}
               size="small"

@@ -14,6 +14,7 @@ import ListingPage from "./pages/crud/listings";
 import OrderPaintWall from "./pages/crud/orderPaintWall";
 import { Routes, Route } from 'react-router-dom';
 import OrderPlan from "./pages/crud/orderPlans";
+import BuildProject from "./pages/crud/BuildProject";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -68,6 +69,12 @@ export const routes = [
             <Route path=":orderId" element={<OrderPlan />} />
           </Routes>
         ),
+      },
+      {
+        icon: <ClipboardDocumentListIcon {...icon} />,
+        name: "Build Projects",
+        path: "/build-project/*",
+        element: <BuildProject />,
       },
     ],
   },

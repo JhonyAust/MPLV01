@@ -4,25 +4,25 @@ import { FaCheck, FaTimes, FaMoneyCheckAlt, FaUserTie, FaPhoneAlt, FaBullhorn, F
 
 const plans = [
   {
-    name: 'MoneyBack Plan NRI',
+    name: 'MoneyBack Pla',
     price: 20999,
     description: 'Guaranteed buyers or Moneyback. Relationship Manager for Super-fast closure.',
     features: [true, true, true, true, true, true, true, true, true, '6 Months']
   },
   {
-    name: 'Relax Plan NRI',
+    name: 'Relax Plan',
     price: 10999,
     description: 'Get Buyers Quickly. Save Lakhs on Brokerage.',
     features: [true, true, true, true, true, true, true, true, false, '3 Months']
   },
   {
-    name: 'Super MoneyBack Plan NRI',
+    name: 'Super MoneyBack Plan',
     price: 26999,
     description: 'Guaranteed buyers or Moneyback. Hire Field Assistant for showing your house.',
     features: [true, true, true, true, true, true, true, true, true, '6 Months']
   },
   {
-    name: 'Super Relax Plan NRI',
+    name: 'Super Relax Plan',
     price: 14999,
     description: 'Leave your house keys and worries to us. Get buyer super-fast.',
     features: [true, true, true, true, true, true, true, true, true, '3 Months']
