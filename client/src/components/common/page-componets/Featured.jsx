@@ -5,12 +5,14 @@ import SingleProductCard from "./SingleProductCard";
 
 const Featured = () => {
   const [rentListings, setRentListings] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL;
+
   console.log(rentListings);
 
   useEffect(() => {
     const fetchRentListings = async () => {
       try {
-        const res = await fetch('/api/listing/get?type=rent&limit=4');
+        const res = await fetch(`${API_URL}/auth/listing/get?type=rent&limit=4`);
         const data = await res.json();
         setRentListings(data);
       } catch (error) {

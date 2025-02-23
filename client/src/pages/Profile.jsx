@@ -32,6 +32,7 @@ export default function Profile() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
   // firebase storage
   // allow read;
   // allow write: if
@@ -76,7 +77,7 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`${API_URL}/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +100,7 @@ export default function Profile() {
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+      const res = await fetch(`${API_URL}/user/delete/${currentUser._id}`, {
         method: 'DELETE',
       });
       const data = await res.json();
@@ -116,7 +117,7 @@ export default function Profile() {
   const handleSignOut = async () => {
     try {
       dispatch(signOutUserStart());
-      const res = await fetch('/api/auth/signout');
+      const res = await fetch(`${API_URL}/auth/signout`);
       const data = await res.json();
       console.log(res);
       if (data.success === false) {
