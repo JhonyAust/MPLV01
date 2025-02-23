@@ -56,6 +56,10 @@ app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/project', projectRouter);
+app.get('/', (req, res) => {
+    res.send('API is running 🚀');
+});
+
 
 // app.use(express.static(path.join(__dirname, '/client/dist')));
 // app.get('*', (req, res) => {
