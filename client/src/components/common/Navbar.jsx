@@ -153,8 +153,8 @@ const Navbar = () => {
       onMouseOver={handleClose}
     >
       <Link to="/" className="flex-shrink-0 flex-align-center gap-x-1 px-[6%]">
-        <img src="/images/logomassets.png" alt="Mutual Assets Logo" className="h-[60px] w-[280px]" />
-        {/* <h1 className="hidden md:block">Mutual Assets</h1> */}
+        <img src="/images/brokerfreelogo.png" alt="BrokerFree Logo" className="h-[25px] w-[180px] sm:h-[30px] sm:w-[240px]" />
+        {/* <h1 className="hidden md:block">BrokerFree</h1> */}
       </Link>
 
       <div className="flex-align-center gap-x-4">
