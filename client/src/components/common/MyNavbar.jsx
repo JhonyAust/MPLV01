@@ -34,7 +34,7 @@ const MyNavbar = () => {
               <div className="text-gray-500  text-md p-6 font-poppins">
                 <ul className="flex flex-col gap-4 ">
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/home">Post Your Property</Link>
+                    <Link to="/create-listing">Post Your Property</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
                     <Link to="/about">Rental Agreement</Link>
@@ -47,25 +47,25 @@ const MyNavbar = () => {
                   </li>
                 
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/home">Home Services</Link>
+                    <Link to="/home-services">Home Services</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/about">Home Loan</Link>
+                    <Link to="/home-loan">Home Loan</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/services">Buil Your Home</Link>
+                    <Link to="/build-home">Buil Your Home</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/contact">Buyer Plans</Link>
+                    <Link to="/tenant/plans">Buyer Plans</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/home">Seller Plans</Link>
+                    <Link to="/seller/plans">Seller Plans</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/about">Commercial Plans</Link>
+                    <Link to="/tenant/plans">Commercial Plans</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/services">Blog</Link>
+                    <Link to="/blog">Blog</Link>
                   </li>
                   <li className=" "onClick={handleContactToggle}>
                      
@@ -78,11 +78,11 @@ const MyNavbar = () => {
                       <div className='space-y-4 p-6 text-gray-950'>
                       <div className="flex items-center">
                         <MdPhone className="mr-2" size={16} />
-                        <p className="">018400000001</p>
+                        <p className="">01810000001</p>
                       </div>
                       <div className="flex items-center">
                         <MdEmail className="mr-2" size={16} />
-                        <p className="">info@nomedia.com</p>
+                        <p className="">info@brokerfree.com</p>
                       </div>
                       <div className="flex ">
                         <MdLocationOn className="mr-2" size={36} />

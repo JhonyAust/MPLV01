@@ -13,7 +13,7 @@ const Footer = () => {
           <div className="flex-1 basis-[10rem]">
             <Link to="/" className="flex-shrink-0 flex-align-center gap-x-1">
               <BiBuildingHouse className="text-3xl text-primary" />
-              <h1 className="hidden md:block">Mutual Property</h1>
+              <h1 className="hidden md:block">Brokerfree</h1>
             </Link>
             <div className="mt-3">
               <p className="text-sm">

@@ -22,7 +22,7 @@ const MyFooter = () => {
       </div>
       <div className="flex flex-row justify-between mb-12 text-black dark:text-white  px-24  mt-10 ">
         <div className='space-y-4'><p className="">018400000001</p>
-        <p className="">info@nomedia.com</p>
+        <p className="">info@brokerfree.com</p>
         <p className="">House:500/A, Road 7, Dhanmondi, Dhaka.</p>
         <div className="flex flex-row text-3xl gap-4">
         <FaTwitter className="" /> {/* Twitter icon */}
@@ -35,7 +35,7 @@ const MyFooter = () => {
         <div className='space-y-4'><p className="">Privacy Policy</p>
         
       
-        <p className="">© 2024. NoMedia.
+        <p className="">© 2024. Brokerfree.
 
         <br/>All Rights Reserved</p>
         <p>

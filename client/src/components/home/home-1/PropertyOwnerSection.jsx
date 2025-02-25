@@ -5,7 +5,7 @@ const PropertyOwnerSection = () => {
     <div className="flex flex-col items-center justify-center py-8 w-full">
       <div className="flex items-center mb-4">
         <div className="border-t border-gray-400 w-1/3 mr-4"></div>
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-white w-96">
+        <h2 className="text-md font-semibold text-gray-800 dark:text-white w-96">
           Are you a Property Owner?
         </h2>
         <div className="border-t border-gray-400 w-1/3 ml-4"></div>

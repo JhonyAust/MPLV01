@@ -49,6 +49,9 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false); // Add state for submenu
   
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
   // Show submenu when clicking MyOrders
    const toggleSubmenu = () => {
     setIsSubmenuOpen(!isSubmenuOpen);
@@ -76,7 +79,24 @@ const Navbar = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [isDropdownOpen]);
+useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        // Scrolling down → Hide Navbar
+        setIsVisible(false);
+      } else {
+        // Scrolling up → Show Navbar
+        setIsVisible(true);
+      }
+      setLastScrollY(window.scrollY);
+    };
 
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
   };
@@ -149,7 +169,9 @@ const Navbar = () => {
   return (
     <div>
     <div
-      className="navbar h-[60px] fixed w-full z-20 top-0 left-0    flex-center-between py-[0.35rem] bg-white/60 border-b backdrop-blur-sm dark:border-dark dark:bg-card-dark/60"
+      className={`navbar h-[60px] fixed w-full z-20 top-0 left-0    flex-center-between py-[0.35rem] bg-white/60 border-b backdrop-blur-sm dark:border-dark dark:bg-card-dark/60 ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      }`}
       onMouseOver={handleClose}
     >
       <Link to="/" className="flex-shrink-0 flex-align-center gap-x-1 px-[6%]">
@@ -447,10 +469,10 @@ const Navbar = () => {
               <div className="text-gray-500  text-md p-6 font-poppins">
                 <ul className="flex flex-col gap-4 ">
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/home">Post Your Property</Link>
+                    <Link to="/create-listing">Post Your Property</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/about">Rental Agreement</Link>
+                    <Link to="/contact">Rental Agreement</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
                     <Link to="/group-share">Group Share</Link>
@@ -460,25 +482,25 @@ const Navbar = () => {
                   </li>
                 
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/home">Home Services</Link>
+                    <Link to="/home-services">Home Services</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/about">Home Loan</Link>
+                    <Link to="/home-loan">Home Loan</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/services">Buil Your Home</Link>
+                    <Link to="/build-home">Build Your Home</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/contact">Buyer Plans</Link>
+                    <Link to="/tenant/plans">Buyer Plans</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/home">Seller Plans</Link>
+                    <Link to="/seller/plans">Seller Plans</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/about">Commercial Plans</Link>
+                    <Link to="/tenant/plans">Commercial Plans</Link>
                   </li>
                   <li className="border-b border-gray-200 py-2 hover:text-green-700">
-                    <Link to="/services">Blog</Link>
+                    <Link to="/blog">Blog</Link>
                   </li>
                   <li className=" "onClick={handleContactToggle}>
                      
@@ -495,7 +517,7 @@ const Navbar = () => {
                       </div>
                       <div className="flex items-center">
                         <MdEmail className="mr-2" size={16} />
-                        <p className="">info@nomedia.com</p>
+                        <p className="">info@brokerfree.com</p>
                       </div>
                       <div className="flex ">
                         <MdLocationOn className="mr-2" size={36} />
