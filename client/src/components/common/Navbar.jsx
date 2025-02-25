@@ -169,7 +169,7 @@ useEffect(() => {
   return (
     <div>
     <div
-      className={`navbar h-[60px] fixed w-full z-20 top-0 left-0    flex-center-between py-[0.35rem] bg-white/60 border-b backdrop-blur-sm dark:border-dark dark:bg-card-dark/60 ${
+      className={`navbar h-[60px] fixed w-full z-20 top-0 left-0  transition-transform duration-[1000ms]   flex-center-between py-[0.35rem] bg-white/60 border-b backdrop-blur-sm dark:border-dark dark:bg-card-dark/60 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
       onMouseOver={handleClose}
