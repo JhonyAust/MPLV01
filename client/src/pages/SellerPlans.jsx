@@ -56,7 +56,7 @@ const SellerPlans = () => {
           Get Buyers Quickly. <span className='text-primary'>SAVE LAKHS</span> on Brokerage.
         </h1>
         <p className='mb-10'>
-          For assistance call us at: <span className='text-primary'>+91-92-425-000-00</span>
+          For assistance call us at: <span className='text-primary'>+88 01766679431</span>
         </p>
       </div>
       <div className="overflow-x-auto">

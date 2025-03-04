@@ -12,8 +12,9 @@ const Featured = () => {
   useEffect(() => {
     const fetchRentListings = async () => {
       try {
-        const res = await fetch(`${API_URL}/auth/listing/get?type=rent&limit=4`);
+        const res = await fetch(`${API_URL}/api/listing/get?type=rent&limit=4`);
         const data = await res.json();
+        console.log("Data of featured :",data);
         setRentListings(data);
       } catch (error) {
         console.log(error);

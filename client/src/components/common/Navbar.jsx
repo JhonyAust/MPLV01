@@ -98,11 +98,26 @@ useEffect(() => {
     };
   }, [lastScrollY]);
   const handleMenuToggle = () => {
-    setMenuOpen(!menuOpen);
+    setMenuOpen((prev) => !prev);
   };
-  const handleContactToggle = () => {
-    setShowContactInfo(!showContactInfo);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuOpen && !event.target.closest(".menu-container") && !event.target.closest(".menu-icon")) {
+        setMenuOpen(false);
+      }
+    };
+  
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [menuOpen]);
+    
+  const handleContactToggle = (event) => {
+    event.stopPropagation(); // Prevents menu from closing
+    setShowContactInfo((prev) => !prev);
   };
+  
   const handleLoginClick = () => {
     // Show the sign-in popup
     setIsOpen(true); // Update isOpen to true
@@ -459,12 +474,8 @@ useEffect(() => {
           {/* Custom Menu List for desktop */}
 
           <div className="relative hidden sm:hidden md:block">
-          <SlMenu
-            className="text-2xl mr-6 text-black cursor-pointer"
-            onClick={handleMenuToggle}
-          />
-          {/* Menu list */}
-          {menuOpen && (
+  <SlMenu className="text-2xl mr-6 text-black cursor-pointer menu-icon" onClick={handleMenuToggle} />
+  {menuOpen && (
             <div className="absolute top-full right-0 bg-white mt-2 shadow-2xl w-[300px] border-[1.5px] border-gray-200 overflow-y-auto  max-h-[450px]">
               <div className="text-gray-500  text-md p-6 font-poppins">
                 <ul className="flex flex-col gap-4 ">

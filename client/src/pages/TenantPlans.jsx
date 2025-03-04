@@ -86,7 +86,7 @@ const TenantPlans = () => {
           Choose a plan and <span className='text-primary'>SAVE THOUSANDS</span> on brokerage.
         </h1>
         <p className='mb-10'>
-          For assistance call us at: <span className='text-primary'>+8801766679431</span>
+          For assistance call us at: <span className='text-primary'>+88 01766679431</span>
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
