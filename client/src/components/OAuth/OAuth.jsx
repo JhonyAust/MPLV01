@@ -5,17 +5,18 @@ import { signInSuccess } from '../../features/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { ImGooglePlus } from "react-icons/im";
 
-export default function OAuth() {
+export default function OAuth({ onSuccess }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
   const handleGoogleClick = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const auth = getAuth(app);
-
+      
       const result = await signInWithPopup(auth, provider);
 
-      const res = await fetch('/api/auth/google', {
+      const res = await fetch(`${API_URL}/api/auth/google`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,6 +29,7 @@ export default function OAuth() {
       });
       const data = await res.json();
       dispatch(signInSuccess(data));
+      onSuccess();
       console.log(result);
       console.log(data);
       navigate('/');

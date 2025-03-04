@@ -11,7 +11,7 @@ const SignInPopUp = ({ isOpen, onClose }) => {
   const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -24,7 +24,7 @@ const SignInPopUp = ({ isOpen, onClose }) => {
     
     try {
       dispatch(signInStart());
-      const res = await fetch(isSignInView ? '/api/auth/signin' : '/api/auth/signup', { // Use appropriate endpoint based on current view
+      const res = await fetch(isSignInView ? `${API_URL}/api/auth/signin` : `${API_URL}/api/auth/signup`, { // Use appropriate endpoint based on current view
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ const SignInPopUp = ({ isOpen, onClose }) => {
                 {isSignInView ? 'Or, Login With' : 'Or, Sign Up With'}
              </p>
               </div>
-              <div className=' '><OAuth/></div>
+              <div className=' '><OAuth onSuccess={onClose} /></div>
             </div>
           </form>
         </div>

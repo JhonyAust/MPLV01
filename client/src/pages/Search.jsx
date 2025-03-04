@@ -20,7 +20,7 @@ const Search = () => {
   const dispatch = useDispatch();
     // React Router navigation
   const navigate = useNavigate();
-
+  const API_URL = import.meta.env.VITE_API_URL;
   // Local state for page
   const [layout, setLayout] = useState("grid");
   const [l_size, setl_size] = useState(0);
@@ -49,7 +49,7 @@ const Search = () => {
     const fetchListings = async () => {
       setLoading(true);
       const searchQuery = new URLSearchParams(location.search).toString();
-      const res = await fetch(`/api/listing/get?${searchQuery}`);
+      const res = await fetch(`${API_URL}/api/listing/get?${searchQuery}`);
       const data = await res.json();
       setListings(data);
       setl_size(data.length);

@@ -7,14 +7,11 @@ const Featured = () => {
   const [rentListings, setRentListings] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  console.log(rentListings);
-
   useEffect(() => {
     const fetchRentListings = async () => {
       try {
         const res = await fetch(`${API_URL}/api/listing/get?type=rent&limit=4`);
         const data = await res.json();
-        console.log("Data of featured :",data);
         setRentListings(data);
       } catch (error) {
         console.log(error);
