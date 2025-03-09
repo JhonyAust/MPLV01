@@ -17,10 +17,11 @@ module.exports = {
             fontFamily: {
                 poppins: "poppins",
                 questrial: "Questrial",
+                sans: ["Noto Sans JP", "sans-serif"],
             },
             colors: {
                 primary: "#FD3752",
-                secondary: "#003049",
+                secondary: "#464646",
                 secondaryOrange: "#FF8475",
                 "main-bg": "#fff",
                 "main-dark": "#1F1D2B",

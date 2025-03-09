@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Mulish&family=Nunito&family=Nunito+Sans:wght@400;600&family=Poppins:ital,wght@0,400;0,500;1,300;1,400&family=Questrial&family=Raleway&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Mulish&family=Nunito&family=Nunito+Sans:wght@400;600&family=Poppins:ital,wght@0,400;0,500;1,300;1,400&family=Questrial&family=Raleway&family=Noto+Sans+JP:wght@400;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -29,8 +29,8 @@ html {
 }
 
 body {
-  @apply font-questrial bg-main-bg text-slate-700 dark:bg-main-dark dark:text-slate-400;
-  font-family: font2;
+  @apply font-questrial bg-main-bg text-[#464646] dark:bg-main-dark dark:text-slate-400;
+  font-family: "Noto Sans JP", font2, sans-serif;
 }
 
 /* General styles */

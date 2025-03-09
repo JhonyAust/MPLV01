@@ -56,24 +56,23 @@ const ServiceComponent = () => {
 
   // Define icon data
   const iconData = [
-    { icon: <TbAirConditioning size={30} />, title: "Air Conditioning" },
-    { icon: <BsPaintBucket size={30} />, title: "Painting Services" },
-    { icon: <FaTruckMoving size={30} />, title: "Moving Services" },
-    { icon: <BsHouseDoor size={30} />, title: "Door Installation" },
-    { icon: <BsTools size={30} />, title: "Repair Services" },
-    { icon: <BsLightning size={30} />, title: "Electrician Services" },
-    { icon: <BsHammer size={30} />, title: "Carpentry Work" },
-    
-    { icon: <BsHouse size={30} />, title: "Home Renovation" },
-    { icon: <BsPerson size={30} />, title: "Cleaning Services" },
-    { icon: <BsClock size={30} />, title: "Time Management" },
-    { icon: <BsCalendar size={30} />, title: "Appointment Scheduling" },
-    { icon: <BsGearWideConnected size={30} />, title: "Smart Home Setup" },
-    { icon: <BsQuestionCircle size={30} />, title: "Support Services" },
-    { icon: <BsWifi size={30} />, title: "Network Setup" },
-    { icon: <BsLock size={30} />, title: "Security Services" },
-    // { icon: <BsMusicNote size={30} />, title: "Entertainment Setup" }
+    { icon: <TbAirConditioning size={30} />, title: "Air Conditioning", link: "/air-conditioning" },
+    { icon: <BsPaintBucket size={30} />, title: "Painting Services", link: "/painting-wall-services" },
+    { icon: <FaTruckMoving size={30} />, title: "Moving Services", link: "/moving" },
+    { icon: <BsHouseDoor size={30} />, title: "Door Installation", link: "/door-installation" },
+    { icon: <BsTools size={30} />, title: "Repair Services", link: "/repair" },
+    { icon: <BsLightning size={30} />, title: "Electrician Services", link: "/electrician" },
+    { icon: <BsHammer size={30} />, title: "Carpentry Work", link: "/carpentry" },
+    { icon: <BsHouse size={30} />, title: "Home Renovation", link: "/renovation" },
+    { icon: <BsPerson size={30} />, title: "Cleaning Services", link: "/cleaning" },
+    { icon: <BsClock size={30} />, title: "Time Management", link: "/time-management" },
+    { icon: <BsCalendar size={30} />, title: "Appointment Scheduling", link: "/appointment" },
+    { icon: <BsGearWideConnected size={30} />, title: "Smart Home Setup", link: "/smart-home" },
+    { icon: <BsQuestionCircle size={30} />, title: "Support Services", link: "/support" },
+    { icon: <BsWifi size={30} />, title: "Network Setup", link: "/network-setup" },
+    { icon: <BsLock size={30} />, title: "Security Services", link: "/security" },
   ];
+  
 
   // Slice the icon data based on showMoreIcons state
   const displayedIcons = showMoreIcons ? iconData : iconData.slice(0, 7);
@@ -104,13 +103,13 @@ const ServiceComponent = () => {
           <div className={`flex ${isMobile ? 'flex-col ' : 'flex-row '} px-8  mb-8`}>
             {/* Grid Section */}
             <div className={`grid grid-cols-4 gap-4 mr-8 ${showMoreIcons ? 'lg:w-1/2' : 'lg:w-1/2'}  mb-4 ${isMobile ? 'lg:mb-0' : ''}`}>
-              {displayedIcons.map((item, index) => (
-                <div key={index} className="flex flex-col items-center justify-center">
+            {displayedIcons.map((item, index) => (
+                <a key={index} href={item.link} className="flex flex-col items-center justify-center">
                   <div className="rounded-full bg-white p-4 mb-2 shadow-md">
                     {item.icon}
                   </div>
                   <span className="text-xs">{item.title}</span>
-                </div>
+                </a>
               ))}
               {/* Show More/Less Icons Button */}
               {iconData.length > 7 && (
