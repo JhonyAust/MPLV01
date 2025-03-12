@@ -41,13 +41,13 @@ export function Footer({ brandName, brandLink, routes }) {
 }
 
 Footer.defaultProps = {
-  brandName: "Mutual Assets Ltd",
-  brandLink: "https://www.mutual-property.com",
+  brandName: "Broker Free",
+  brandLink: "https://www.broker-free.com",
   routes: [
-    { name: "Mutual Assets Ltd", path: "https://www.mutual-property.com" },
+    { name: "Broker Free", path: "https://www.broker-free.com" },
     { name: "About Us", path: "https://www.mutual-property.com/about-us" },
     { name: "Blog", path: "https://www.mutual-property.com" },
-    { name: "License", path: "https://www.mutual-property.com" },
+    { name: "License", path: "https://www.broker-free.com" },
   ],
 };
 

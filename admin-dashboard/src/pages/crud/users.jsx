@@ -28,7 +28,7 @@ const UsersPage = () => {
     const fetchUsers = async () => {
       dispatch(setLoading(true));
       try {
-        const res = await fetch(`${API_URL}/user/users`, {
+        const res = await fetch(`${API_URL}/api/user/users`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -32,7 +32,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
             variant="h6"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
           >
-            Mutual Assets Ltd
+            Broker Free
           </Typography>
         </Link>
         <IconButton

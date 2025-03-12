@@ -37,7 +37,7 @@ import {
 import { addNotification, removeNotification, clearNotifications } from '@/features/nfcSlice';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:3000');
+const socket = io('https://mplv01.onrender.com');
 
 export function DashboardNavbar() {
   const dispatch = useDispatch();
@@ -48,6 +48,7 @@ export function DashboardNavbar() {
   const { currentAdmin } = useSelector((state) => state.admin);
   const { nfc, newItemAdded } = useSelector((state) => state.nfcSlice);
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     socket.on('newOrder', async (data) => {
@@ -61,7 +62,7 @@ export function DashboardNavbar() {
       const userId = order.user;
   
       try {
-        const res = await fetch(`/api/user/${userId}`, {
+        const res = await fetch(`${API_URL}/api/user/${userId}`, {
           method: 'GET',
         });
         const userData = await res.json();
@@ -83,7 +84,7 @@ export function DashboardNavbar() {
     try {
       dispatch(signOutAdminStart());
 
-      const res = await fetch('/api/auth/signout');
+      const res = await fetch(`${API_URL}/api/auth/signout`);
       const data = await res.json();
       
       if (data.success === false) {
