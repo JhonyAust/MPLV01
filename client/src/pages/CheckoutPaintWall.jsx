@@ -11,6 +11,8 @@ const CheckoutPaintWall = () => {
   const totalAmount = useSelector(state => state.cart.totalAmount);
   const { currentUser } = useSelector((state) => state.user);
   console.log("Cart Items are: ",cartItems);
+  const API_URL = import.meta.env.VITE_API_URL;
+
 
   useEffect(() => {
     if (!cartItems || cartItems.length === 0 ) {
@@ -52,7 +54,7 @@ const CheckoutPaintWall = () => {
         type:'paint',
       };
 
-      const response = await fetch('/api/orders/create', {
+      const response = await fetch(`${API_URL}/api/orders/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
