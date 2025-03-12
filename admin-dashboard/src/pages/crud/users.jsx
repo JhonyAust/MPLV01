@@ -22,12 +22,13 @@ const UsersPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchUsers = async () => {
       dispatch(setLoading(true));
       try {
-        const res = await fetch('/api/user/users', {
+        const res = await fetch(`${API_URL}/user/users`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -54,7 +55,7 @@ const UsersPage = () => {
     e.preventDefault();
     dispatch(setLoading(true));
     try {
-      const res = await fetch('/api/auth/signup', {
+      const res = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

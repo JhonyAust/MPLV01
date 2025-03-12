@@ -18,12 +18,13 @@ const ListingPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { currentAdmin } = useSelector((state) => state.admin);
   const listingsPerPage = 5;
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchListings = async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/listing/getAll', {
+            const res = await fetch(`${API_URL}/api/listing/getAll`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Current-Admin': JSON.stringify(currentAdmin), // Include currentAdmin in headers
@@ -48,7 +49,7 @@ const ListingPage = () => {
   const handleDeleteListing = async (id) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/listing/delete/${id}`, {
+      const res = await fetch(`${API_URL}/api/listing/delete/${id}`, {
         method: 'DELETE',
       });
       const data = await res.json();
@@ -67,7 +68,7 @@ const ListingPage = () => {
   const handleApproveListing = async (id) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/listing/approve/${id}`, {
+      const res = await fetch(`${API_URL}/api/listing/approve/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

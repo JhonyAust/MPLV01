@@ -36,6 +36,7 @@ export function Profile() {
     email: currentAdmin ? currentAdmin.email : '',
     password: '',
   });
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -49,7 +50,7 @@ export function Profile() {
     e.preventDefault();
     try {
       dispatch(updateAdminStart());
-      const res = await fetch(`/api/user/update/${currentAdmin._id}`, {
+      const res = await fetch(`${API_URL}/api/user/update/${currentAdmin._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

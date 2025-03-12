@@ -111,12 +111,13 @@ const OrderPlan = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const response = await fetch('/api/orders/plan');
+        const response = await fetch(`${API_URL}/api/orders/plan`);
         if (!response.ok) {
           throw new Error('Failed to fetch orders');
         }
@@ -134,7 +135,7 @@ const OrderPlan = () => {
   const handleDeleteOrder = async (orderId) => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/orders/${orderId}`, {
+      const response = await fetch(`${API_URL}/api/orders/${orderId}`, {
         method: 'DELETE',
       });
 
@@ -153,7 +154,7 @@ const OrderPlan = () => {
   const handleUpdateOrderStatus = async (orderId, status) => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/orders/update-status`, {
+      const response = await fetch(`${API_URL}/api/orders/update-status`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
