@@ -1,20 +1,10 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import react from '@vitejs/plugin-react-swc';
 
 export default defineConfig({
-    server: {
-        proxy: {
-            '/api': {
-                target: 'http://localhost:3000',
-                secure: false,
-            },
-        },
-    },
+    base: '/', // Ensures correct base path for deployment
     plugins: [react()],
-    resolve: {
-        alias: {
-            '@': path.resolve(__dirname, 'src'),
-        },
-    },
+    build: {
+        outDir: 'dist', // Default output folder for Vite
+    }
 });
