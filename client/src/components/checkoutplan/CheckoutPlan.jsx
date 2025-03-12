@@ -9,6 +9,8 @@ const CheckoutPlan = () => {
   const navigate = useNavigate();
   const { plan } = location.state || {};
   const { currentUser } = useSelector((state) => state.user);
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -42,7 +44,7 @@ const CheckoutPlan = () => {
         type: 'plan',
       };
 
-      const response = await fetch('/api/orders/create', {
+      const response = await fetch(`${API_URL}/api/orders/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
