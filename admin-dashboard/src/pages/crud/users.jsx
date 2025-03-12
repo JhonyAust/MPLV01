@@ -82,7 +82,7 @@ const UsersPage = () => {
   const handleDeleteUser = async (id) => {
     dispatch(setLoading(true));
     try {
-      const res = await fetch(`/api/user/delete/${id}`, {
+      const res = await fetch(`${API_URL}/api/user/delete/${id}`, {
         method: 'DELETE',
       });
       const data = await res.json();

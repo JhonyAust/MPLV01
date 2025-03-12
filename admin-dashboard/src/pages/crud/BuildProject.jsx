@@ -30,6 +30,7 @@ const BuildProject = () => {
   const [imageUploadError, setImageUploadError] = useState('');
   const [error, setError] = useState('');
   const [showAtAGlance, setShowAtAGlance] = useState(false);  // Collapsible state
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const storeImage = (file) => {
     return new Promise((resolve, reject) => {
@@ -101,7 +102,7 @@ const BuildProject = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/project/create', {
+      const res = await fetch(`${API_URL}/api/project/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
