@@ -11,7 +11,9 @@ const MyPlansOrders = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch(`${API_URL}/api/orders/myplans-orders`);
+                const response = await fetch(`${API_URL}/api/orders/myplans-orders`,{
+                    credentials: 'include',
+                });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
