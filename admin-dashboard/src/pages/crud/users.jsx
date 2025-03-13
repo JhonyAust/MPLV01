@@ -30,6 +30,7 @@ const UsersPage = () => {
       try {
         const res = await fetch(`${API_URL}/api/user/users`, {
           method: 'GET',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
