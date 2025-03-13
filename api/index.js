@@ -1,5 +1,3 @@
-// index.js
-
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -10,67 +8,62 @@ import listingRouter from './routes/listing.route.js';
 import projectRouter from './routes/project.route.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
-import cors from "cors";
+import cors from 'cors';
 import { Server } from 'socket.io';
 import http from 'http';
-import Listing from './models/listing.model.js';
+
 dotenv.config();
 
 mongoose
-    .connect(process.env.MONGO)
-    .then(async() => {
-        console.log('Connected to MongoDB!');
-        // Update listings to include isApproved property
-        // try {
-        //     const listings = await Listing.find();
-        //     for (const listing of listings) {
-        //         if (listing.isApproved === undefined) {
-        //             listing.isApproved = false; // Set default value for isApproved
-        //             await listing.save();
-        //             console.log(`Updated listing with ID: ${listing._id}`);
-        //         }
-        //     }
-        //     console.log('All listings updated successfully');
-        // } catch (error) {
-        //     console.error('Error updating listings:', error.message);
-        // }
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+    .connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('✅ Connected to MongoDB!'))
+    .catch((err) => console.log('❌ MongoDB Connection Error:', err));
 
 const __dirname = path.resolve();
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "*",
+        origin: ['https://www.broker-free.com', 'https://admin.broker-free.com'], // ✅ Allow only your frontends
+        credentials: true, // ✅ Allow cookies in WebSocket
     },
 });
 
+//  Apply Middlewares
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+    origin: ['https://www.broker-free.com', 'https://admin.broker-free.com'], // ✅ Allowed Origins
+    credentials: true, // ✅ Allow Cookies in Requests
+}));
+
+//  API Routes
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/project', projectRouter);
+
+//  Default Route
 app.get('/', (req, res) => {
-    res.send('API is running 🚀');
+    res.send('🚀 API is running successfully!');
 });
 
+//  Serve Static Files for Client & Admin Dashboard
+app.use(express.static(path.join(__dirname, 'client/dist')));
+app.use('/admin', express.static(path.join(__dirname, 'admin-dashboard/dist')));
 
-// app.use(express.static(path.join(__dirname, '/client/dist')));
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
-// });
+//  Handle Client SPA (Single Page Application) Routing
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
+});
 
-// app.use('/admin', express.static(path.join(__dirname, '../admin-dashboard/dist')));
-// app.get('/admin/*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../admin-dashboard/dist', 'index.html'));
-// });
+//  Handle Admin Dashboard SPA Routing
+app.get('/admin/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-dashboard/dist', 'index.html'));
+});
 
+//  Error Handling Middleware
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
@@ -81,15 +74,18 @@ app.use((err, req, res, next) => {
     });
 });
 
+// WebSockets (Socket.io)
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    console.log('🟢 A user connected');
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log('🔴 User disconnected');
     });
 });
 
-server.listen(3000, () => {
-    console.log('Server is running on port 3000!');
+// Start Server
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(` Server is running on port ${PORT}`);
 });
 
 export { io };
