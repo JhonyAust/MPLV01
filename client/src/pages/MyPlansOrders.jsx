@@ -6,11 +6,12 @@ const MyPlansOrders = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const API_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch('/api/orders/myplans-orders');
+                const response = await fetch(`${API_URL}/api/orders/myplans-orders`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
