@@ -22,59 +22,55 @@ mongoose
 const __dirname = path.resolve();
 const app = express();
 const server = http.createServer(app);
+
+// ✅ Fix CORS for API Requests
+app.use(cors({
+    origin: ['https://www.broker-free.com', 'https://admin.broker-free.com'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+}));
+
+app.use(express.json());
+app.use(cookieParser());
+
+// ✅ Fix CORS for WebSockets
 const io = new Server(server, {
     cors: {
         origin: ['https://www.broker-free.com', 'https://admin.broker-free.com'],
-        credentials: true, // ✅ Allow cookies in WebSocket
+        credentials: true,
     },
 });
 
-//  Apply Middlewares
-app.use(express.json());
-app.use(cookieParser());
-app.use(cors({
-    origin: ['https://www.broker-free.com', 'https://admin.broker-free.com'],
-    credentials: true, // ✅ Allow Cookies in Requests
-}));
-
-//  API Routes
+// ✅ API Routes
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/project', projectRouter);
 
-//  Default Route
-app.get('/', (req, res) => {
-    res.send('🚀 API is running successfully!');
-});
-
-//  Serve Static Files for Client & Admin Dashboard
+// ✅ Serve Static Files
 app.use(express.static(path.join(__dirname, 'client/dist')));
 app.use('/admin', express.static(path.join(__dirname, 'admin-dashboard/dist')));
 
-//  Handle Client SPA (Single Page Application) Routing
+// ✅ Fix Order of Routes to Prevent Overriding
+app.get('/admin/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-dashboard/dist', 'index.html'));
+});
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
 });
 
-//  Handle Admin Dashboard SPA Routing
-app.get('/admin/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'admin-dashboard/dist', 'index.html'));
-});
-
-//  Error Handling Middleware
+// ✅ Global Error Handling Middleware
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
-    const message = err.message || 'Internal Server Error';
     return res.status(statusCode).json({
         success: false,
         statusCode,
-        message,
+        message: err.message || 'Internal Server Error',
     });
 });
 
-// WebSockets (Socket.io)
+// ✅ WebSockets (Socket.io)
 io.on('connection', (socket) => {
     console.log('🟢 A user connected');
     socket.on('disconnect', () => {
@@ -82,10 +78,10 @@ io.on('connection', (socket) => {
     });
 });
 
-// Start Server
+// ✅ Start Server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(` Server is running on port ${PORT}`);
+    console.log(`🚀 Server is running on port ${PORT}`);
 });
 
 export { io };
