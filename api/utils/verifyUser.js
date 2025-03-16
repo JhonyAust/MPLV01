@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { errorHandler } from './error.js';
 
 export const verifyToken = (req, res, next) => {
+    console.log('Cookies received:', req.cookies);
     const token = req.cookies.access_token;
 
     if (!token) return next(errorHandler(401, 'Unauthorized'));
@@ -14,7 +15,7 @@ export const verifyToken = (req, res, next) => {
     });
 };
 export const verifyAdmin = (req, res, next) => {
-    const currentAdmin = JSON.parse(req.headers['current-admin']); 
+    const currentAdmin = JSON.parse(req.headers['current-admin']);
     if (currentAdmin.role !== 'admin') {
         return res.status(403).json({ message: 'Access denied: Admins only' });
     }

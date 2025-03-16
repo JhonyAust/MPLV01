@@ -25,7 +25,7 @@ const server = http.createServer(app);
 
 // ✅ Fix CORS for API Requests
 app.use(cors({
-    origin: ['https://www.broker-free.com', 'https://admin.broker-free.com'],
+    origin: ['https://www.broker-free.com', 'https://admin.broker-free.com', 'http://localhost:5173','http://localhost:5174'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
@@ -36,7 +36,7 @@ app.use(cookieParser());
 // ✅ Fix CORS for WebSockets
 const io = new Server(server, {
     cors: {
-        origin: ['https://www.broker-free.com', 'https://admin.broker-free.com'],
+        origin: ['https://www.broker-free.com', 'https://admin.broker-free.com','http://localhost:5173','http://localhost:5174'],
         credentials: true,
     },
 });
