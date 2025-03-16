@@ -24,7 +24,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: ['https://www.broker-free.com', 'https://admin.broker-free.com'], // ✅ Allow only your frontends
+        origin: ['https://www.broker-free.com', 'https://admin.broker-free.com'],
         credentials: true, // ✅ Allow cookies in WebSocket
     },
 });
@@ -33,7 +33,7 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: ['https://www.broker-free.com', 'https://admin.broker-free.com'], // ✅ Allowed Origins
+    origin: ['https://www.broker-free.com', 'https://admin.broker-free.com'],
     credentials: true, // ✅ Allow Cookies in Requests
 }));
 
