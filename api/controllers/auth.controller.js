@@ -34,6 +34,7 @@ export const signin = async(req, res, next) => {
                 secure: true,
                 sameSite: 'none',
                 domain:'broker-free.com',
+                path: "/",
             })
             .status(200)
             .json({...rest, token });
@@ -54,6 +55,7 @@ export const google = async(req, res, next) => {
                 secure: true,
                 sameSite: 'none',
                 domain:'broker-free.com',
+                path: "/",
                 })
                 .status(200)
                 .json(rest);
