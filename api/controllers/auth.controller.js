@@ -33,6 +33,7 @@ export const signin = async(req, res, next) => {
                 httpOnly: true,
                 secure: true,
                 sameSite: 'none',
+                domain:'broker-free.com',
             })
             .status(200)
             .json({...rest, token });
@@ -52,6 +53,7 @@ export const google = async(req, res, next) => {
                 httpOnly: true,
                 secure: true,
                 sameSite: 'none',
+                domain:'broker-free.com',
                 })
                 .status(200)
                 .json(rest);
@@ -76,6 +78,7 @@ export const google = async(req, res, next) => {
                     httpOnly: true,
                 secure: true,
                 sameSite: 'none',
+                domain:'broker-free.com',
                  })
                 .status(200)
                 .json(rest);

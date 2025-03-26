@@ -7,10 +7,21 @@ const MyPaintOrders = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const API_URL = import.meta.env.VITE_API_URL;
-
+    console.log("Cookies are:", document.cookie);
     useEffect(() => {
         const fetchOrders = async () => {
             try {
+
+                // Log all cookies
+            console.log("Cookies:", document.cookie);
+
+            // Extract `access_token` from cookies
+            const cookies = document.cookie.split("; ");
+            const accessToken = cookies.find(row => row.startsWith("access_token="))?.split("=")[1];
+
+            console.log("🔑 Access Token:", accessToken); // Log token
+
+
                 const response = await fetch(`${API_URL}/api/orders/mypaint-orders`,{
                     credentials: 'include',
                 });
